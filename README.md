@@ -1,6 +1,8 @@
 # Python cleancode
 마리아노 아나야 저자의 [파이썬 클린코드](http://www.kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&linkClass=&barcode=9791161340463) 책을 공부하고 코드와 내용정리를 저장한 repository입니다.  
+
 클린코드 분야에는 [Clean code](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788966260959&orderClick=LEa&Kc=)라는 유명한 책이 있지만 자바를 기반으로 책이 쓰여졌기 때문에, 파이썬을 주언어로 사용하는 저에게는 별로 적합해 보이지가 않았습니다. 따라서 지금의 책을 공부하기로 결심했습니다.  
+
 하나 주의해야 할 점은, 이 책은 초보자를 위한 책이 아니라는 것입니다. 파이썬으로 실제 프로젝트들을 하고 객체지향 소프트웨어 디자인에 어느 정도 익숙한 개발자들을 위한 책입니다.  
 저도 파이썬으로 프로젝트를 하면서 코드가 점점 복잡해지다보니까 코드의 유지보수성을 높이기 위하여 이 책을 공부하게 되었습니다. 만약 파이썬에 익숙하지 않다면 기본서를 우선적으로 공부하기를 추천드립니다.
 ## Contents
