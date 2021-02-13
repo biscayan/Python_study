@@ -51,4 +51,54 @@ print(sys.version)
 - 반드시 상대적인 경로로 임포트해야 하는 경우에는 from . import foo처럼 명시적인 구문을 사용하라.  
 - 임포트를 적을 때는 표준 라이브러리 모듈, 서드 파티 모듈, 사용자 정의 모듈 순서로 섹션을 나눠라. 각 섹션에는 알파벳 순서로 모듈을 임포트하라.  
 
-## 
+## bytes와 str의 차이를 알아두라
+파이썬에는 문자열 데이터의 시퀀스를 표현하는 두 가지 타입이 있다. 바로 bytes와 str이다.  
+bytes타입의 인스턴스에는 부호가 없는 8바이트 데이터가 그대로 들어간다.  
+```python
+a = b'h\x65llo'
+print(list(a))
+print(a)
+
+>>>
+[104, 101, 108, 108, 111]
+b'hello'
+```
+str 인스턴스에는 사람이 사용하는 언어의 문자를 표현하는 유니코드 코드 포인트가 들어있다.
+```python
+a = 'a\u0300 propos'
+print(list(a))
+print(a)
+
+>>>
+['a', '̀', ' ', 'p', 'r', 'o', 'p', 'o', 's']
+à propos
+```
+중요한 사실은 str 인스턴스에는 직접 대응하는 이진 인코딩이 없고, bytes에는 직접 대응하는 텍스트 인코딩이 없다는 것이다.  
+따라서 유니코드 데이터를 이진 데이터로 변환하려면 str의 encode 메소드를 호출해야 하고, 이진 데이터를 유니코드 데이터로 변환하려면 bytes의 decode 메소드를 호출해야 한다.  
+
+이진 8비트 값과 유니코드 문자열을 파이썬에서 다룰 때 꼭 기억해야 할 두가지 문제점이 있다.  
+첫 번째 문제점은 bytes와 str이 똑같이 작동하는 것처럼 보이지만 각각의 인스턴스는 서로 호환되지 않기 때문에 전달 중인 문자 시퀀스가 어떤 타입인지를 항상 잘 알고 있어야 한다는 것이다.  
+연산자를 사용하여 bytes를 bytes에 더하거나 str을 str에 더할 수 있지만, str 인스턴스를 bytes 인스턴스에 더하거나 bytes 인스턴스를 str 인스턴스에 더할 수 없다.  
+또한, 더하기 연산 뿐만 아니라 비교연산자도 사용을 할 수 없다.  
+```python
+print(b'one' + 'two')
+
+>>>
+Traceback (most recent call last):
+  File "c:\git\upload\Effective_python\Chapter1\item3.py", line 34, in <module>
+    print(b'one' + 'two')
+TypeError: can't concat str to bytes
+```
+```python
+print('one' + b'two')
+
+>>>
+Traceback (most recent call last):
+  File "c:\git\upload\Effective_python\Chapter1\item3.py", line 34, in <module>
+    print('one' + b'two')
+TypeError: can only concatenate str (not "bytes") to str
+```
+두 번째 문제점은 open을 호출해 얻은 파일 핸들과 관련한 연산들이 디폴트로 유니코드 문자열을 요구하고 이진 바이트 문자열을 요구하지 않는 것이다.  
+따라서 파일을 열 때, 텍스트 쓰기 모드('w')가 아닌 이진 쓰기 모드('wb')를, 그리고 텍스트 읽기 모드('r')가 아닌 이진 쓰기 모드('rb')를 사용해야 한다.  
+
+## C 스타일 형식 문자열을 str.format과 쓰기보다는 f-문자열을 통한 인터폴레이션을 사용하라
