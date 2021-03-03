@@ -153,3 +153,86 @@ print(after)
 가독성을 해치는 문자를 제외하더라도 이런 불필요한 중복으로 인해 딕셔너리를 사용하는 형식화 식이 너무 길어진다.  
 
 ### 내장 함수 format과 str.format
+파이썬 3부터는 %를 사용하는 오래된 C스타일 형식화 문자열보다 더 표현력이 좋은 고급 문자열 형식화 기능이 도입됐다.  
+str타입에 새로 추가된 format 메소드를 호출하면 여러 값에 대해 한꺼번에 이 기능을 적용할 수 있다.  
+그리고 %d 같은 C 스타일 형식화 지정자를 사용하는 대신 위치 지정자 {}를 사용할 수 있다.  
+```python
+key = 'my_var'
+value = 1.234
+
+formatted = '{} = {}'.format(key, value)
+print(formatted)
+
+>>>
+my_var = 1.234
+```
+각 위치 지정자에는 콜론 뒤에 형식 지정자를 붙여 넣어 문자열에 값을 넣을 때 어떤 형식으로 변환할지 정할 수 있다.  
+```python
+key = 'my_var'
+value = 1.234
+
+formatted = '{:<10} = {:.2f}'.format(key, value)
+print(formatted)
+
+>>>
+my_var     = 1.23
+```
+위치 지정자 중괄호에 위치 인덱스, 즉 format 메소드에 전달된 인자의 순서를 표현하는 위치 인덱스를 전달할 수도 있다.  
+이렇게 하면 format에 넘기는 인자의 순서를 바꾸지 않아도 형식화 문자열을 사용해 형식화한 값을 출력 순서를 변경할 수 있다.  
+또한 형식화 문자열 안에서 같은 위치 인덱스를 여러 번 사용할 수도 있으므로 format에 넘기는 인자에 값을 여러 번 반복할 필요도 없다.  
+```python
+key = 'my_var'
+value = 1.234
+
+formatted = '{1} = {0}'.format(key, value)
+print(formatted)
+
+>>>
+1.234 = my_var
+```
+```python
+name = '철수'
+formatted = '{0}는 음식을 좋아해. {0}가 요리하는 모습을 봐요.'.format(name)
+print(formatted)
+
+>>>
+철수는 음식을 좋아해. 철수가 요리하는 모습을 봐요.
+```
+
+### 인터폴레이션을 통한 형식 문자열
+파이썬 3.6부터는 인터폴레이션을 통한 문자열, 즉 f-문자열이 도입됐다. 이 새로운 언어 문법에는 형식 문자열 앞에 f문자를 붙여야 한다.  
+f-문자열은 형식 문자열의 표현력을 극대화하고, 형식화 문자열에서 키와 값을 불필요하게 중복 지정해야 하는 경우를 없애준다.  
+```python
+key = 'my_var'
+value = 1.234
+
+formatted = f'{key} = {value}'
+print(formatted)
+
+>>>
+my_var = 1.234
+```
+앞에서 살펴본 format 함수의 형식 지정자 안에서 콜론 뒤에 사용할 수 있는 내장 미니 언어를 f-문자열에서도 사용할 수 있다.  
+```python
+formatted = f'{key!r:<10} = {value:.2f}'
+print(formatted)
+
+>>>
+'my_var'   = 1.23
+```
+f-문자열을 사용한 형식화는 C 스타일 형식화 문자열에 % 연산자를 사용하는 경우나 str.format 메소드를 사용하는 경우보다 항상 더 짧다.
+```python
+f_string = f'{key:<10} = {value:.2f}'
+
+c_tuple  = '%-10s = %.2f' % (key, value)
+
+str_args = '{:<10} = {:.2f}'.format(key, value)
+
+str_kw   = '{key:<10} = {value:.2f}'.format(key=key, value=value)
+                                            
+c_dict   = '%(key)-10s = %(value).2f' % {'key': key, 'value': value}
+```
+f-문자열이 제공하는 표현력, 간결성, 명확성을 고려할 때 파이썬 프로그래머가 사용할 수 있는 형식화 옵션 중에서 f-문자열이 최고다.  
+값을 문자열로 형식화해야 하는 상황을 만나게 되면 다른 대안 대신 f-문자열을 택하라.
+
+## 5. 복잡한 식을 쓰는 대신 도우미 함수를 작성하라
