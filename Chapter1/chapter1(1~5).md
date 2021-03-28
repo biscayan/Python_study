@@ -236,3 +236,12 @@ f-문자열이 제공하는 표현력, 간결성, 명확성을 고려할 때 파
 값을 문자열로 형식화해야 하는 상황을 만나게 되면 다른 대안 대신 f-문자열을 택하라.
 
 ## 5. 복잡한 식을 쓰는 대신 도우미 함수를 작성하라
+어떠한 로직을 반복 적용하려면 도우미 함수를 작성하는 것이 좋다
+```python
+### found에 요소가 있으면 그 값을 리턴하고 만약 요소가 없다면 기본값인 0을 리턴
+def get_first_int(values, key, default=0):
+    found = values.get(key, [''])
+    if found[0]:
+        return int(found[0])
+    return default
+```
