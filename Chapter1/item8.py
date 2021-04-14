@@ -42,7 +42,7 @@ print(longest_name)
 
 names.append('Rosalind')
 for name, count in zip(names, counts):
-    print(name)
+    print(f'{name}: {count}')
 
 import itertools
 for name, count in itertools.zip_longest(names, counts):
