@@ -13,3 +13,27 @@ dict 내장 타입에는 get 메서드가 들어 있다.
 count = counters.get(key, 0)
 counters[key] = count + 1
 ```
+
+## 17. 내부 상태에서 원소가 없는 경우를 처리할 때는 setdefault보다 defaultdict를 사용하라
+collections 내장 모듈에 있는 defaultdict 클래스는 키가 없을 때 자동으로 디폴트 값을 저장해서 간단히 처리할 수 있게 해준다.  
+```python
+class Visits:
+    def __init__(self):
+        self.data = {}
+
+    def add(self, country, city):
+        city_set = self.data.setdefault(country, set())
+        city_set.add(city)
+
+class Visits:
+    def __init__(self):
+        self.data = defaultdict(set)
+
+    def add(self, country, city):
+        self.data[country].add(city)
+```
+defaultdict를 쓰는 것이 setdefault를 쓰는 것보다 훨씬 간결하고, setdefault에서 add 메서드가 아주 많이 호출되면 집합 생성에 따른 비용도 커지는데 defaultdict에서는 집합이 불필요하게 만들어지지 않는다.  
+
+## 18. __missing__을 사용해 키에 따라 다른 디폴트 값을 생성하는 방법을 알아두라
+setdefault나 defaultdict가 모두 사용하기가 적당하지 않을 수도 있다.  
+dict 타입의 하위 클래스를 만들고 __missing__특별 메서드를 구현하면 키가 없는 경우를 처리하는 로직을 커스텀화할 수 있다. 즉, 딕셔너리에 키가 없을 경우 __missing__메서드가 호출된다.
